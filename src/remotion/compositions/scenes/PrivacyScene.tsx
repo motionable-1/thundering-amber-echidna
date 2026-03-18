@@ -20,19 +20,19 @@ const O = 12;
 
 const PRIVACY_FEATURES = [
   {
-    icon: "lucide/cpu",
+    icon: "https://pub-e3bfc0083b0644b296a7080b21024c5f.r2.dev/wispr-flow/1773851266478_79cttgna4hr_wispr_icon_cpu.svg",
     title: "On-Device Processing",
     desc: "Your voice never leaves your device",
     delay: 0,
   },
   {
-    icon: "lucide/shield-check",
+    icon: "https://pub-e3bfc0083b0644b296a7080b21024c5f.r2.dev/wispr-flow/1773851267056_me83jcn6w7o_wispr_icon_shield.svg",
     title: "End-to-End Encrypted",
     desc: "Military-grade data protection",
     delay: 8,
   },
   {
-    icon: "lucide/database",
+    icon: "https://pub-e3bfc0083b0644b296a7080b21024c5f.r2.dev/wispr-flow/1773851267803_8o1k8i2q82g_wispr_icon_database.svg",
     title: "Zero Data Storage",
     desc: "Nothing stored, nothing tracked",
     delay: 16,
@@ -110,7 +110,7 @@ const PrivacyCard: React.FC<{
           }}
         >
           <Img
-            src={`https://api.iconify.design/${icon}.svg?color=%23034F46&width=38`}
+            src={icon}
             style={{ width: 38, height: 38 }}
           />
         </div>
@@ -133,7 +133,7 @@ const PrivacyCard: React.FC<{
           }}
         >
           <Img
-            src="https://api.iconify.design/lucide/check.svg?color=%23FFFFEB&width=16"
+            src="https://pub-e3bfc0083b0644b296a7080b21024c5f.r2.dev/wispr-flow/1773851269430_paa3lgva1j_wispr_icon_check.svg"
             style={{ width: 16, height: 16 }}
           />
         </div>
@@ -226,7 +226,7 @@ export const PrivacyScene: React.FC<{
             }}
           >
             <Img
-              src="https://api.iconify.design/lucide/lock.svg?color=%23034F46&width=20"
+              src="https://pub-e3bfc0083b0644b296a7080b21024c5f.r2.dev/wispr-flow/1773851270014_2jir3mugmmj_wispr_icon_lock.svg"
               style={{ width: 20, height: 20 }}
             />
             <span

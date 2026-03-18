@@ -15,6 +15,9 @@ const GREEN = "#034F46";
 const PURPLE = "#F0D7FF";
 const DARK = "#1A1A1A";
 
+// Offset to clear transition-in
+const O = 12;
+
 const TIMELINE_ITEMS = [
   {
     icon: "lucide/keyboard",
@@ -28,14 +31,14 @@ const TIMELINE_ITEMS = [
     label: "Basic Dictation",
     desc: "Raw speech, needs editing",
     isOld: true,
-    delay: 8,
+    delay: 10,
   },
   {
     icon: "lucide/sparkles",
     label: "Wispr Flow",
     desc: "Intelligent voice-to-polished text",
     isOld: false,
-    delay: 16,
+    delay: 20,
   },
 ];
 
@@ -47,7 +50,7 @@ const TimelineItem: React.FC<{
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const startFrame = item.delay + 15;
+  const startFrame = item.delay + O + 18;
   const itemScale = spring({
     frame: Math.max(0, frame - startFrame),
     fps,
@@ -66,7 +69,7 @@ const TimelineItem: React.FC<{
 
   // Strikethrough animation for old items
   const strikeWidth = item.isOld
-    ? interpolate(frame, [startFrame + 25, startFrame + 40], [0, 100], {
+    ? interpolate(frame, [startFrame + 28, startFrame + 45], [0, 100], {
         extrapolateRight: "clamp",
         extrapolateLeft: "clamp",
         easing: Easing.out(Easing.cubic),
@@ -186,12 +189,12 @@ const TimelineItem: React.FC<{
               borderRadius: 100,
               background: PURPLE,
               border: `1.5px solid ${DARK}`,
-              opacity: interpolate(frame, [startFrame + 20, startFrame + 30], [0, 1], {
+              opacity: interpolate(frame, [startFrame + 22, startFrame + 32], [0, 1], {
                 extrapolateRight: "clamp",
                 extrapolateLeft: "clamp",
               }),
               transform: `scale(${spring({
-                frame: Math.max(0, frame - startFrame - 20),
+                frame: Math.max(0, frame - startFrame - 22),
                 fps,
                 config: { damping: 10, stiffness: 140 },
                 durationInFrames: 18,
@@ -222,14 +225,14 @@ export const VoiceOsScene: React.FC<{
   const frame = useCurrentFrame();
 
   // Label entrance
-  const labelOpacity = interpolate(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-  const labelX = interpolate(frame, [0, 15], [-20, 0], {
+  const labelOpacity = interpolate(frame, [O, O + 12], [0, 1], { extrapolateRight: "clamp" });
+  const labelX = interpolate(frame, [O, O + 15], [-20, 0], {
     extrapolateRight: "clamp",
     easing: Easing.out(Easing.cubic),
   });
 
   // Vertical line between timeline items
-  const lineHeight = interpolate(frame, [18, 60], [0, 100], {
+  const lineHeight = interpolate(frame, [O + 20, O + 65], [0, 100], {
     extrapolateRight: "clamp",
     extrapolateLeft: "clamp",
     easing: Easing.out(Easing.cubic),
@@ -243,7 +246,7 @@ export const VoiceOsScene: React.FC<{
           position: "absolute",
           top: "10%",
           right: "10%",
-          opacity: interpolate(frame, [5, 20], [0, 0.15], { extrapolateRight: "clamp" }),
+          opacity: interpolate(frame, [O + 5, O + 20], [0, 0.15], { extrapolateRight: "clamp" }),
         }}
       >
         <ShapeAnimation shape="ring" animation="rotate" size={70} color={GREEN} strokeWidth={2} speed={0.06} />
@@ -253,7 +256,7 @@ export const VoiceOsScene: React.FC<{
           position: "absolute",
           bottom: "14%",
           left: "8%",
-          opacity: interpolate(frame, [10, 25], [0, 0.18], { extrapolateRight: "clamp" }),
+          opacity: interpolate(frame, [O + 10, O + 25], [0, 0.18], { extrapolateRight: "clamp" }),
         }}
       >
         <ShapeAnimation shape="star" animation="breathe" size={40} color={PURPLE} speed={0.3} />
@@ -302,7 +305,7 @@ export const VoiceOsScene: React.FC<{
           stagger={0.06}
           duration={0.5}
           ease="power3.out"
-          startFrom={6}
+          startFrom={O + 6}
           style={{
             fontFamily: headingFont,
             fontSize: 50,

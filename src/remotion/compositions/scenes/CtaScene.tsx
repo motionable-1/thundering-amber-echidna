@@ -19,6 +19,9 @@ const GREEN = "#034F46";
 const PURPLE = "#F0D7FF";
 const DARK = "#1A1A1A";
 
+// Offset to clear transition-in
+const O = 12;
+
 export const CtaScene: React.FC<{
   headingFont: string;
   bodyFont: string;
@@ -27,25 +30,25 @@ export const CtaScene: React.FC<{
   const { fps } = useVideoConfig();
 
   // Funding badge
-  const badgeScale = spring({ frame: Math.max(0, frame - 5), fps, config: { damping: 12, stiffness: 100 }, durationInFrames: 25 });
-  const badgeOpacity = interpolate(frame, [5, 18], [0, 1], { extrapolateRight: "clamp" });
+  const badgeScale = spring({ frame: Math.max(0, frame - O - 5), fps, config: { damping: 12, stiffness: 100 }, durationInFrames: 25 });
+  const badgeOpacity = interpolate(frame, [O + 5, O + 18], [0, 1], { extrapolateRight: "clamp" });
 
   // CTA button
-  const btnScale = spring({ frame: Math.max(0, frame - 40), fps, config: { damping: 10, stiffness: 100 }, durationInFrames: 25 });
-  const btnOpacity = interpolate(frame, [40, 52], [0, 1], { extrapolateRight: "clamp" });
+  const btnScale = spring({ frame: Math.max(0, frame - O - 45), fps, config: { damping: 10, stiffness: 100 }, durationInFrames: 25 });
+  const btnOpacity = interpolate(frame, [O + 45, O + 57], [0, 1], { extrapolateRight: "clamp" });
 
   // Website url
-  const urlOpacity = interpolate(frame, [55, 68], [0, 1], { extrapolateRight: "clamp" });
-  const urlY = interpolate(frame, [55, 68], [15, 0], {
+  const urlOpacity = interpolate(frame, [O + 62, O + 75], [0, 1], { extrapolateRight: "clamp" });
+  const urlY = interpolate(frame, [O + 62, O + 75], [15, 0], {
     extrapolateRight: "clamp",
     easing: Easing.out(Easing.cubic),
   });
 
   // Logo
-  const logoScale = spring({ frame, fps, config: { damping: 14, stiffness: 80 }, durationInFrames: 30 });
+  const logoScale = spring({ frame: Math.max(0, frame - O), fps, config: { damping: 14, stiffness: 80 }, durationInFrames: 30 });
 
   // Subtle confetti celebration
-  const showParticles = frame > 35;
+  const showParticles = frame > O + 40;
 
   return (
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
@@ -118,7 +121,7 @@ export const CtaScene: React.FC<{
           stagger={0.06}
           duration={0.5}
           ease="power3.out"
-          startFrom={15}
+          startFrom={O + 18}
           style={{
             fontFamily: headingFont,
             fontSize: 56,
@@ -138,7 +141,7 @@ export const CtaScene: React.FC<{
           stagger={0.06}
           duration={0.5}
           ease="power2.out"
-          startFrom={28}
+          startFrom={O + 32}
           style={{
             fontFamily: bodyFont,
             fontSize: 22,

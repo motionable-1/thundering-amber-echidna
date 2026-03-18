@@ -62,7 +62,7 @@ const StatCard: React.FC<{
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const startFrame = stat.delay + O + 22;
+  const startFrame = stat.delay + O + 20;
   const cardScale = spring({
     frame: Math.max(0, frame - startFrame),
     fps,
@@ -123,8 +123,8 @@ const StatCard: React.FC<{
         <Counter
           from={0}
           to={stat.value}
-          duration={1.5}
-          delay={(stat.delay + O + 25) / 30}
+          duration={1.8}
+          delay={stat.delay / 30 + 0.8}
           decimals={stat.decimals ?? 0}
           prefix={stat.prefix}
           suffix=""

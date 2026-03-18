@@ -26,20 +26,23 @@ const { fontFamily: bodyFont } = loadFigtree("normal", {
 });
 
 /**
- * Wispr Flow Product Demo — Extended
+ * Wispr Flow Product Demo — Extended with breathing room
+ *
+ * Each scene now has ~25 extra frames of hold time after animations settle,
+ * plus a 12-frame offset on all animation starts to clear transition-in.
  *
  * Scene breakdown (30fps):
- * 1. Intro            — 120 frames (4.0s)
- * 2. Cross-Platform   — 110 frames (3.7s)
- * 3. Speech Cleanup   — 120 frames (4.0s)
- * 4. Universal Apps   — 110 frames (3.7s)
- * 5. Privacy First    — 120 frames (4.0s)  ← NEW
- * 6. Stats / Numbers  — 120 frames (4.0s)  ← NEW
- * 7. Voice OS Vision  — 120 frames (4.0s)  ← NEW
- * 8. CTA / Outro      — 150 frames (5.0s)
+ * 1. Intro            — 145 frames (4.8s)   last anim ~87 → 58 frames hold
+ * 2. Cross-Platform   — 135 frames (4.5s)   last anim ~77 → 58 frames hold
+ * 3. Speech Cleanup   — 150 frames (5.0s)   last anim ~112 → 38 frames hold
+ * 4. Universal Apps   — 140 frames (4.7s)   last anim ~87 → 53 frames hold
+ * 5. Privacy First    — 145 frames (4.8s)   last anim ~90 → 55 frames hold
+ * 6. Stats / Numbers  — 150 frames (5.0s)   last anim ~102 → 48 frames hold
+ * 7. Voice OS Vision  — 145 frames (4.8s)   last anim ~82 → 63 frames hold
+ * 8. CTA / Outro      — 170 frames (5.7s)   last anim ~87 → 83 frames hold
  *
  * Transitions: 7 × 20 = 140 frames overlap
- * Total: 120+110+120+110+120+120+120+150 - 140 = 830 frames (~27.7s)
+ * Total: 145+135+150+140+145+150+145+170 - 140 = 1040 frames (~34.7s)
  */
 
 const TRANSITION_DURATION = 20;
@@ -62,7 +65,7 @@ export const Main: React.FC = () => {
       <AbsoluteFill>
         <TransitionSeries>
           {/* Scene 1: Intro */}
-          <TransitionSeries.Sequence durationInFrames={120}>
+          <TransitionSeries.Sequence durationInFrames={145}>
             <IntroScene headingFont={headingFont} bodyFont={bodyFont} />
           </TransitionSeries.Sequence>
 
@@ -72,7 +75,7 @@ export const Main: React.FC = () => {
           />
 
           {/* Scene 2: Cross-Platform */}
-          <TransitionSeries.Sequence durationInFrames={110}>
+          <TransitionSeries.Sequence durationInFrames={135}>
             <CrossPlatformScene headingFont={headingFont} bodyFont={bodyFont} />
           </TransitionSeries.Sequence>
 
@@ -82,7 +85,7 @@ export const Main: React.FC = () => {
           />
 
           {/* Scene 3: Speech Cleanup */}
-          <TransitionSeries.Sequence durationInFrames={120}>
+          <TransitionSeries.Sequence durationInFrames={150}>
             <SpeechCleanupScene headingFont={headingFont} bodyFont={bodyFont} />
           </TransitionSeries.Sequence>
 
@@ -92,7 +95,7 @@ export const Main: React.FC = () => {
           />
 
           {/* Scene 4: Universal Apps */}
-          <TransitionSeries.Sequence durationInFrames={110}>
+          <TransitionSeries.Sequence durationInFrames={140}>
             <UniversalAppsScene headingFont={headingFont} bodyFont={bodyFont} />
           </TransitionSeries.Sequence>
 
@@ -101,8 +104,8 @@ export const Main: React.FC = () => {
             timing={linearTiming({ durationInFrames: TRANSITION_DURATION })}
           />
 
-          {/* Scene 5: Privacy First (NEW) */}
-          <TransitionSeries.Sequence durationInFrames={120}>
+          {/* Scene 5: Privacy First */}
+          <TransitionSeries.Sequence durationInFrames={145}>
             <PrivacyScene headingFont={headingFont} bodyFont={bodyFont} />
           </TransitionSeries.Sequence>
 
@@ -111,8 +114,8 @@ export const Main: React.FC = () => {
             timing={linearTiming({ durationInFrames: TRANSITION_DURATION })}
           />
 
-          {/* Scene 6: Stats / By the Numbers (NEW) */}
-          <TransitionSeries.Sequence durationInFrames={120}>
+          {/* Scene 6: Stats / By the Numbers */}
+          <TransitionSeries.Sequence durationInFrames={150}>
             <StatsScene headingFont={headingFont} bodyFont={bodyFont} />
           </TransitionSeries.Sequence>
 
@@ -121,8 +124,8 @@ export const Main: React.FC = () => {
             timing={linearTiming({ durationInFrames: TRANSITION_DURATION })}
           />
 
-          {/* Scene 7: Voice OS Vision (NEW) */}
-          <TransitionSeries.Sequence durationInFrames={120}>
+          {/* Scene 7: Voice OS Vision */}
+          <TransitionSeries.Sequence durationInFrames={145}>
             <VoiceOsScene headingFont={headingFont} bodyFont={bodyFont} />
           </TransitionSeries.Sequence>
 
@@ -132,7 +135,7 @@ export const Main: React.FC = () => {
           />
 
           {/* Scene 8: CTA + buffer */}
-          <TransitionSeries.Sequence durationInFrames={150}>
+          <TransitionSeries.Sequence durationInFrames={170}>
             <CtaScene headingFont={headingFont} bodyFont={bodyFont} />
           </TransitionSeries.Sequence>
         </TransitionSeries>
