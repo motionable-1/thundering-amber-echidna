@@ -1,55 +1,105 @@
-import { AbsoluteFill, Artifact, useCurrentFrame, useVideoConfig } from "remotion";
-import { loadFont } from "@remotion/google-fonts/SpaceMono";
+import { AbsoluteFill, Artifact, useCurrentFrame } from "remotion";
+import { loadFont as loadFigtree } from "@remotion/google-fonts/Figtree";
+import { loadFont as loadEbGaramond } from "@remotion/google-fonts/EBGaramond";
+import { TransitionSeries, linearTiming } from "@remotion/transitions";
+import { fade } from "@remotion/transitions/fade";
+import { blurDissolve } from "../library/components/layout/transitions/presentations/blurDissolve";
 
-const LoaderDots = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+import { WisprBackground } from "./WisprBackground";
+import { IntroScene } from "./scenes/IntroScene";
+import { CrossPlatformScene } from "./scenes/CrossPlatformScene";
+import { SpeechCleanupScene } from "./scenes/SpeechCleanupScene";
+import { UniversalAppsScene } from "./scenes/UniversalAppsScene";
+import { CtaScene } from "./scenes/CtaScene";
 
-  const dot = (index: number) => {
-    const phase = (frame / fps) * 2 * Math.PI + index * 0.8;
-    return 0.35 + Math.max(0, Math.sin(phase)) * 0.65;
-  };
+// Load Wispr brand fonts
+const { fontFamily: headingFont } = loadEbGaramond("normal", {
+  weights: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
+const { fontFamily: bodyFont } = loadFigtree("normal", {
+  weights: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
 
-  return (
-    <span className="inline-flex gap-1">
-      {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          className="inline-block text-sky-300"
-          style={{ opacity: dot(i) }}
-        >
-          .
-        </span>
-      ))}
-    </span>
-  );
-};
+/**
+ * Wispr Flow Product Demo
+ *
+ * Scene breakdown (30fps):
+ * 1. Intro         — 120 frames (4s)
+ * 2. Cross-Platform — 110 frames (3.67s)
+ * 3. Speech Cleanup — 120 frames (4s)
+ * 4. Universal Apps — 110 frames (3.67s)
+ * 5. CTA / Outro   — 120 frames (4s) + 30 frames buffer
+ *
+ * Transitions: 4 × 20 frames = 80 frames overlap
+ * Total: 120 + 110 + 120 + 110 + 150 - 80 = 530 frames (~17.7s)
+ */
+
+const TRANSITION_DURATION = 20;
 
 export const Main: React.FC = () => {
-  const { fontFamily } = loadFont();
   const frame = useCurrentFrame();
+
   return (
     <>
-      {/* Leave this here to generate a thumbnail */}
       {frame === 0 && (
         <Artifact content={Artifact.Thumbnail} filename="thumbnail.jpeg" />
       )}
-      <AbsoluteFill className="flex items-center justify-center bg-[#0f1115]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.28),transparent_45%),radial-gradient(circle_at_70%_60%,rgba(16,185,129,0.2),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:48px_48px] opacity-40" />
-        <div
-          className="flex flex-col items-center gap-4 text-center text-white drop-shadow-[0_12px_32px_rgba(0,0,0,0.55)]"
-          style={{ fontFamily, fontWeight: 700, letterSpacing: "0.01em" }}
-        >
-          <div className="text-4xl md:text-5xl font-bold">
-            <span className="font-extrabold text-sky-300">TypeFrames</span> is
-            building your video
-            <LoaderDots />
-          </div>
-          <div className="text-base md:text-lg text-white/70">
-            Rendering scenes, timing transitions, and polishing frames.
-          </div>
-        </div>
+
+      {/* Persistent ambient background */}
+      <AbsoluteFill>
+        <WisprBackground />
+      </AbsoluteFill>
+
+      {/* Scene transitions */}
+      <AbsoluteFill>
+        <TransitionSeries>
+          {/* Scene 1: Intro */}
+          <TransitionSeries.Sequence durationInFrames={120}>
+            <IntroScene headingFont={headingFont} bodyFont={bodyFont} />
+          </TransitionSeries.Sequence>
+
+          <TransitionSeries.Transition
+            presentation={blurDissolve()}
+            timing={linearTiming({ durationInFrames: TRANSITION_DURATION })}
+          />
+
+          {/* Scene 2: Cross-Platform */}
+          <TransitionSeries.Sequence durationInFrames={110}>
+            <CrossPlatformScene headingFont={headingFont} bodyFont={bodyFont} />
+          </TransitionSeries.Sequence>
+
+          <TransitionSeries.Transition
+            presentation={fade()}
+            timing={linearTiming({ durationInFrames: TRANSITION_DURATION })}
+          />
+
+          {/* Scene 3: Speech Cleanup */}
+          <TransitionSeries.Sequence durationInFrames={120}>
+            <SpeechCleanupScene headingFont={headingFont} bodyFont={bodyFont} />
+          </TransitionSeries.Sequence>
+
+          <TransitionSeries.Transition
+            presentation={blurDissolve()}
+            timing={linearTiming({ durationInFrames: TRANSITION_DURATION })}
+          />
+
+          {/* Scene 4: Universal Apps */}
+          <TransitionSeries.Sequence durationInFrames={110}>
+            <UniversalAppsScene headingFont={headingFont} bodyFont={bodyFont} />
+          </TransitionSeries.Sequence>
+
+          <TransitionSeries.Transition
+            presentation={fade()}
+            timing={linearTiming({ durationInFrames: TRANSITION_DURATION })}
+          />
+
+          {/* Scene 5: CTA + buffer */}
+          <TransitionSeries.Sequence durationInFrames={150}>
+            <CtaScene headingFont={headingFont} bodyFont={bodyFont} />
+          </TransitionSeries.Sequence>
+        </TransitionSeries>
       </AbsoluteFill>
     </>
   );
