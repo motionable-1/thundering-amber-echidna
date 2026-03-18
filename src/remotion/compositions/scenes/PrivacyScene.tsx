@@ -15,6 +15,9 @@ const GREEN = "#034F46";
 const PURPLE = "#F0D7FF";
 const DARK = "#1A1A1A";
 
+// Offset to clear transition-in
+const O = 12;
+
 const PRIVACY_FEATURES = [
   {
     icon: "lucide/cpu",
@@ -26,13 +29,13 @@ const PRIVACY_FEATURES = [
     icon: "lucide/shield-check",
     title: "End-to-End Encrypted",
     desc: "Military-grade data protection",
-    delay: 6,
+    delay: 8,
   },
   {
     icon: "lucide/database",
     title: "Zero Data Storage",
     desc: "Nothing stored, nothing tracked",
-    delay: 12,
+    delay: 16,
   },
 ];
 
@@ -47,7 +50,7 @@ const PrivacyCard: React.FC<{
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const startFrame = delay + 18;
+  const startFrame = delay + O + 22;
   const cardScale = spring({
     frame: Math.max(0, frame - startFrame),
     fps,
@@ -68,7 +71,7 @@ const PrivacyCard: React.FC<{
   const floatY = Math.sin((frame - delay) / fps * 1.2 + index * 1.5) * 3;
 
   // Check icon scale pop
-  const checkDelay = startFrame + 20;
+  const checkDelay = startFrame + 22;
   const checkScale = spring({
     frame: Math.max(0, frame - checkDelay),
     fps,
@@ -173,8 +176,8 @@ export const PrivacyScene: React.FC<{
   const frame = useCurrentFrame();
 
   // Label entrance
-  const labelOpacity = interpolate(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-  const labelX = interpolate(frame, [0, 15], [-20, 0], {
+  const labelOpacity = interpolate(frame, [O, O + 12], [0, 1], { extrapolateRight: "clamp" });
+  const labelX = interpolate(frame, [O, O + 15], [-20, 0], {
     extrapolateRight: "clamp",
     easing: Easing.out(Easing.cubic),
   });
@@ -187,7 +190,7 @@ export const PrivacyScene: React.FC<{
           position: "absolute",
           top: "15%",
           right: "8%",
-          opacity: interpolate(frame, [5, 20], [0, 0.18], { extrapolateRight: "clamp" }),
+          opacity: interpolate(frame, [O + 5, O + 20], [0, 0.18], { extrapolateRight: "clamp" }),
         }}
       >
         <ShapeAnimation shape="hexagon" animation="rotate" size={55} color={GREEN} speed={0.06} />
@@ -197,7 +200,7 @@ export const PrivacyScene: React.FC<{
           position: "absolute",
           bottom: "12%",
           left: "10%",
-          opacity: interpolate(frame, [10, 25], [0, 0.12], { extrapolateRight: "clamp" }),
+          opacity: interpolate(frame, [O + 10, O + 25], [0, 0.12], { extrapolateRight: "clamp" }),
         }}
       >
         <ShapeAnimation shape="diamond" animation="breathe" size={45} color={PURPLE} speed={0.4} />
@@ -246,7 +249,7 @@ export const PrivacyScene: React.FC<{
           stagger={0.06}
           duration={0.5}
           ease="power3.out"
-          startFrom={6}
+          startFrom={O + 6}
           style={{
             fontFamily: headingFont,
             fontSize: 52,

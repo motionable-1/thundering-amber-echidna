@@ -17,6 +17,9 @@ const PURPLE = "#F0D7FF";
 const DARK = "#1A1A1A";
 const RED_MUTED = "#C0392B";
 
+// Offset to clear transition-in
+const O = 12;
+
 export const SpeechCleanupScene: React.FC<{
   headingFont: string;
   bodyFont: string;
@@ -25,19 +28,19 @@ export const SpeechCleanupScene: React.FC<{
   const { fps } = useVideoConfig();
 
   // Messy text entrance
-  const messyOpacity = interpolate(frame, [10, 22], [0, 1], { extrapolateRight: "clamp" });
-  const messyScale = spring({ frame: Math.max(0, frame - 10), fps, config: { damping: 14 }, durationInFrames: 25 });
+  const messyOpacity = interpolate(frame, [O + 15, O + 27], [0, 1], { extrapolateRight: "clamp" });
+  const messyScale = spring({ frame: Math.max(0, frame - O - 15), fps, config: { damping: 14 }, durationInFrames: 25 });
 
   // Arrow / transform
-  const arrowOpacity = interpolate(frame, [40, 50], [0, 1], { extrapolateRight: "clamp" });
-  const arrowScale = spring({ frame: Math.max(0, frame - 40), fps, config: { damping: 12, stiffness: 100 }, durationInFrames: 20 });
+  const arrowOpacity = interpolate(frame, [O + 50, O + 60], [0, 1], { extrapolateRight: "clamp" });
+  const arrowScale = spring({ frame: Math.max(0, frame - O - 50), fps, config: { damping: 12, stiffness: 100 }, durationInFrames: 20 });
 
   // Clean text entrance
-  const cleanOpacity = interpolate(frame, [55, 67], [0, 1], { extrapolateRight: "clamp" });
-  const cleanScale = spring({ frame: Math.max(0, frame - 55), fps, config: { damping: 14 }, durationInFrames: 25 });
+  const cleanOpacity = interpolate(frame, [O + 68, O + 80], [0, 1], { extrapolateRight: "clamp" });
+  const cleanScale = spring({ frame: Math.max(0, frame - O - 68), fps, config: { damping: 14 }, durationInFrames: 25 });
 
   // Sparkle on clean text
-  const sparkleOpacity = interpolate(frame, [65, 75], [0, 1], { extrapolateRight: "clamp" });
+  const sparkleOpacity = interpolate(frame, [O + 80, O + 90], [0, 1], { extrapolateRight: "clamp" });
 
   return (
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: 80 }}>
@@ -47,7 +50,7 @@ export const SpeechCleanupScene: React.FC<{
           position: "absolute",
           top: "10%",
           right: "12%",
-          opacity: interpolate(frame, [5, 20], [0, 0.2], { extrapolateRight: "clamp" }),
+          opacity: interpolate(frame, [O + 5, O + 20], [0, 0.2], { extrapolateRight: "clamp" }),
         }}
       >
         <ShapeAnimation shape="star" animation="rotate" size={45} color={PURPLE} speed={0.15} />
@@ -57,8 +60,8 @@ export const SpeechCleanupScene: React.FC<{
         {/* Label */}
         <div
           style={{
-            opacity: interpolate(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" }),
-            transform: `translateX(${interpolate(frame, [0, 15], [-20, 0], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) })}px)`,
+            opacity: interpolate(frame, [O, O + 12], [0, 1], { extrapolateRight: "clamp" }),
+            transform: `translateX(${interpolate(frame, [O, O + 15], [-20, 0], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) })}px)`,
           }}
         >
           <div
@@ -96,7 +99,7 @@ export const SpeechCleanupScene: React.FC<{
           stagger={0.06}
           duration={0.5}
           ease="power3.out"
-          startFrom={5}
+          startFrom={O + 5}
           style={{
             fontFamily: headingFont,
             fontSize: 50,
@@ -235,7 +238,7 @@ export const SpeechCleanupScene: React.FC<{
                 top: -12,
                 right: -12,
                 opacity: sparkleOpacity,
-                transform: `scale(${spring({ frame: Math.max(0, frame - 65), fps, config: { damping: 8, stiffness: 120 }, durationInFrames: 20 })})`,
+                transform: `scale(${spring({ frame: Math.max(0, frame - O - 80), fps, config: { damping: 8, stiffness: 120 }, durationInFrames: 20 })})`,
               }}
             >
               <Img

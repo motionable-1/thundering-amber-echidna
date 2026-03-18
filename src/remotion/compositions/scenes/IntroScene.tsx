@@ -18,6 +18,9 @@ const GREEN = "#034F46";
 const PURPLE = "#F0D7FF";
 const DARK = "#1A1A1A";
 
+// Offset all animations to start after transition-in clears
+const O = 12;
+
 export const IntroScene: React.FC<{
   headingFont: string;
   bodyFont: string;
@@ -26,25 +29,25 @@ export const IntroScene: React.FC<{
   const { fps } = useVideoConfig();
 
   // Logo entrance spring
-  const logoScale = spring({ frame, fps, config: { damping: 12, stiffness: 80 }, durationInFrames: 40 });
-  const logoOpacity = interpolate(frame, [0, 15], [0, 1], { extrapolateRight: "clamp" });
+  const logoScale = spring({ frame: Math.max(0, frame - O), fps, config: { damping: 12, stiffness: 80 }, durationInFrames: 40 });
+  const logoOpacity = interpolate(frame, [O, O + 15], [0, 1], { extrapolateRight: "clamp" });
 
   // Tagline entrance
-  const taglineOpacity = interpolate(frame, [25, 40], [0, 1], { extrapolateRight: "clamp" });
-  const taglineY = interpolate(frame, [25, 45], [30, 0], {
+  const taglineOpacity = interpolate(frame, [O + 30, O + 45], [0, 1], { extrapolateRight: "clamp" });
+  const taglineY = interpolate(frame, [O + 30, O + 50], [30, 0], {
     extrapolateRight: "clamp",
     easing: Easing.out(Easing.cubic),
   });
 
   // Subtitle entrance
-  const subOpacity = interpolate(frame, [45, 60], [0, 1], { extrapolateRight: "clamp" });
-  const subY = interpolate(frame, [45, 65], [20, 0], {
+  const subOpacity = interpolate(frame, [O + 55, O + 70], [0, 1], { extrapolateRight: "clamp" });
+  const subY = interpolate(frame, [O + 55, O + 75], [20, 0], {
     extrapolateRight: "clamp",
     easing: Easing.out(Easing.cubic),
   });
 
   // Decorative shapes
-  const ringScale = spring({ frame: Math.max(0, frame - 10), fps, config: { damping: 15, stiffness: 60 }, durationInFrames: 30 });
+  const ringScale = spring({ frame: Math.max(0, frame - O - 5), fps, config: { damping: 15, stiffness: 60 }, durationInFrames: 30 });
 
   return (
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
@@ -74,8 +77,8 @@ export const IntroScene: React.FC<{
           position: "absolute",
           top: "22%",
           right: "18%",
-          opacity: interpolate(frame, [15, 30], [0, 0.3], { extrapolateRight: "clamp" }),
-          transform: `scale(${spring({ frame: Math.max(0, frame - 15), fps, config: { damping: 10 }, durationInFrames: 25 })})`,
+          opacity: interpolate(frame, [O + 18, O + 33], [0, 0.3], { extrapolateRight: "clamp" }),
+          transform: `scale(${spring({ frame: Math.max(0, frame - O - 18), fps, config: { damping: 10 }, durationInFrames: 25 })})`,
         }}
       >
         <ShapeAnimation shape="diamond" animation="breathe" size={40} color={PURPLE} speed={0.5} />
@@ -85,8 +88,8 @@ export const IntroScene: React.FC<{
           position: "absolute",
           bottom: "25%",
           left: "15%",
-          opacity: interpolate(frame, [20, 35], [0, 0.25], { extrapolateRight: "clamp" }),
-          transform: `scale(${spring({ frame: Math.max(0, frame - 20), fps, config: { damping: 10 }, durationInFrames: 25 })})`,
+          opacity: interpolate(frame, [O + 25, O + 40], [0, 0.25], { extrapolateRight: "clamp" }),
+          transform: `scale(${spring({ frame: Math.max(0, frame - O - 25), fps, config: { damping: 10 }, durationInFrames: 25 })})`,
         }}
       >
         <ShapeAnimation shape="hexagon" animation="breathe" size={35} color={GREEN} speed={0.4} />
@@ -118,7 +121,7 @@ export const IntroScene: React.FC<{
             stagger={0.08}
             duration={0.5}
             ease="power3.out"
-            startFrom={28}
+            startFrom={O + 33}
             style={{
               fontFamily: headingFont,
               fontSize: 62,
@@ -144,7 +147,7 @@ export const IntroScene: React.FC<{
           <BlurReveal
             stagger={0.03}
             duration={0.6}
-            startFrom={48}
+            startFrom={O + 58}
             style={{
               fontFamily: bodyFont,
               fontSize: 24,

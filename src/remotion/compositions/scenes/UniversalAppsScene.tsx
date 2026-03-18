@@ -9,16 +9,20 @@ import {
   AbsoluteFill,
 } from "remotion";
 import { FadeInWords } from "../../library/components/text/TextAnimation";
+
 const GREEN = "#034F46";
 const DARK = "#1A1A1A";
 
+// Offset to clear transition-in
+const O = 12;
+
 const APPS = [
   { name: "Slack", icon: "logos:slack-icon", delay: 0 },
-  { name: "Gmail", icon: "logos:google-gmail", delay: 3 },
-  { name: "Notion", icon: "logos:notion-icon", delay: 6 },
-  { name: "Docs", icon: "logos:google-drive", delay: 9 },
-  { name: "Teams", icon: "logos:microsoft-teams", delay: 12 },
-  { name: "ChatGPT", icon: "logos:openai-icon", delay: 15 },
+  { name: "Gmail", icon: "logos:google-gmail", delay: 4 },
+  { name: "Notion", icon: "logos:notion-icon", delay: 8 },
+  { name: "Docs", icon: "logos:google-drive", delay: 12 },
+  { name: "Teams", icon: "logos:microsoft-teams", delay: 16 },
+  { name: "ChatGPT", icon: "logos:openai-icon", delay: 20 },
 ];
 
 const AppBubble: React.FC<{
@@ -31,13 +35,14 @@ const AppBubble: React.FC<{
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  const startFrame = delay + O + 18;
   const bubbleScale = spring({
-    frame: Math.max(0, frame - delay - 12),
+    frame: Math.max(0, frame - startFrame),
     fps,
     config: { damping: 10, stiffness: 120 },
     durationInFrames: 25,
   });
-  const bubbleOpacity = interpolate(frame, [delay + 12, delay + 22], [0, 1], {
+  const bubbleOpacity = interpolate(frame, [startFrame, startFrame + 10], [0, 1], {
     extrapolateRight: "clamp",
     extrapolateLeft: "clamp",
   });
@@ -96,15 +101,15 @@ export const UniversalAppsScene: React.FC<{
   const { fps } = useVideoConfig();
 
   // Microphone icon pulse
-  const micScale = spring({ frame: Math.max(0, frame - 5), fps, config: { damping: 12, stiffness: 80 }, durationInFrames: 30 });
+  const micScale = spring({ frame: Math.max(0, frame - O - 5), fps, config: { damping: 12, stiffness: 80 }, durationInFrames: 30 });
   const micPulse = 1 + Math.sin(frame / fps * 3) * 0.05;
 
   // "Works everywhere" ring expanding
-  const ringExpand = interpolate(frame, [8, 40], [0.5, 1], {
+  const ringExpand = interpolate(frame, [O + 8, O + 40], [0.5, 1], {
     extrapolateRight: "clamp",
     easing: Easing.out(Easing.cubic),
   });
-  const ringOpacity = interpolate(frame, [8, 20], [0, 0.15], { extrapolateRight: "clamp" });
+  const ringOpacity = interpolate(frame, [O + 8, O + 20], [0, 0.15], { extrapolateRight: "clamp" });
 
   return (
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: 80 }}>
@@ -127,8 +132,8 @@ export const UniversalAppsScene: React.FC<{
         {/* Label */}
         <div
           style={{
-            opacity: interpolate(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" }),
-            transform: `translateY(${interpolate(frame, [0, 15], [-15, 0], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) })}px)`,
+            opacity: interpolate(frame, [O, O + 12], [0, 1], { extrapolateRight: "clamp" }),
+            transform: `translateY(${interpolate(frame, [O, O + 15], [-15, 0], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) })}px)`,
           }}
         >
           <div
@@ -166,7 +171,7 @@ export const UniversalAppsScene: React.FC<{
           stagger={0.06}
           duration={0.5}
           ease="power3.out"
-          startFrom={5}
+          startFrom={O + 5}
           style={{
             fontFamily: headingFont,
             fontSize: 50,
@@ -184,7 +189,7 @@ export const UniversalAppsScene: React.FC<{
         {/* Central microphone icon */}
         <div
           style={{
-            opacity: interpolate(frame, [5, 18], [0, 1], { extrapolateRight: "clamp" }),
+            opacity: interpolate(frame, [O + 5, O + 18], [0, 1], { extrapolateRight: "clamp" }),
             transform: `scale(${micScale * micPulse})`,
             marginBottom: 8,
           }}
@@ -225,8 +230,8 @@ export const UniversalAppsScene: React.FC<{
         {/* Subtitle */}
         <div
           style={{
-            opacity: interpolate(frame, [50, 65], [0, 1], { extrapolateRight: "clamp" }),
-            transform: `translateY(${interpolate(frame, [50, 65], [15, 0], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) })}px)`,
+            opacity: interpolate(frame, [O + 60, O + 75], [0, 1], { extrapolateRight: "clamp" }),
+            transform: `translateY(${interpolate(frame, [O + 60, O + 75], [15, 0], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) })}px)`,
           }}
         >
           <span

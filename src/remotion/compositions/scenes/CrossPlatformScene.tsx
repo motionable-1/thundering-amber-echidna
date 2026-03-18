@@ -15,11 +15,14 @@ const GREEN = "#034F46";
 const PURPLE = "#F0D7FF";
 const DARK = "#1A1A1A";
 
+// Offset to clear transition-in
+const O = 12;
+
 const PLATFORMS = [
   { name: "Mac", icon: "tabler:brand-apple", delay: 0 },
-  { name: "Windows", icon: "tabler:brand-windows", delay: 4 },
-  { name: "iPhone", icon: "tabler:device-mobile", delay: 8 },
-  { name: "Android", icon: "tabler:brand-android", delay: 12 },
+  { name: "Windows", icon: "tabler:brand-windows", delay: 5 },
+  { name: "iPhone", icon: "tabler:device-mobile", delay: 10 },
+  { name: "Android", icon: "tabler:brand-android", delay: 15 },
 ];
 
 const PlatformCard: React.FC<{
@@ -95,14 +98,14 @@ export const CrossPlatformScene: React.FC<{
   const frame = useCurrentFrame();
 
   // Section label
-  const labelOpacity = interpolate(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-  const labelX = interpolate(frame, [0, 15], [-20, 0], {
+  const labelOpacity = interpolate(frame, [O, O + 12], [0, 1], { extrapolateRight: "clamp" });
+  const labelX = interpolate(frame, [O, O + 15], [-20, 0], {
     extrapolateRight: "clamp",
     easing: Easing.out(Easing.cubic),
   });
 
   // Connecting line animation
-  const lineWidth = interpolate(frame, [20, 55], [0, 100], {
+  const lineWidth = interpolate(frame, [O + 25, O + 60], [0, 100], {
     extrapolateRight: "clamp",
     extrapolateLeft: "clamp",
     easing: Easing.inOut(Easing.cubic),
@@ -118,7 +121,7 @@ export const CrossPlatformScene: React.FC<{
           position: "absolute",
           top: "12%",
           left: "8%",
-          opacity: interpolate(frame, [5, 20], [0, 0.2], { extrapolateRight: "clamp" }),
+          opacity: interpolate(frame, [O + 5, O + 20], [0, 0.2], { extrapolateRight: "clamp" }),
         }}
       >
         <ShapeAnimation shape="circle" animation="breathe" size={60} color={PURPLE} speed={0.3} />
@@ -128,7 +131,7 @@ export const CrossPlatformScene: React.FC<{
           position: "absolute",
           bottom: "15%",
           right: "10%",
-          opacity: interpolate(frame, [10, 25], [0, 0.15], { extrapolateRight: "clamp" }),
+          opacity: interpolate(frame, [O + 10, O + 25], [0, 0.15], { extrapolateRight: "clamp" }),
         }}
       >
         <ShapeAnimation shape="ring" animation="rotate" size={80} color={GREEN} strokeWidth={2} speed={0.1} />
@@ -177,7 +180,7 @@ export const CrossPlatformScene: React.FC<{
           stagger={0.06}
           duration={0.5}
           ease="power3.out"
-          startFrom={8}
+          startFrom={O + 8}
           style={{
             fontFamily: headingFont,
             fontSize: 52,
@@ -212,7 +215,7 @@ export const CrossPlatformScene: React.FC<{
               key={p.name}
               name={p.name}
               icon={p.icon}
-              delay={p.delay + 15}
+              delay={p.delay + O + 20}
               bodyFont={bodyFont}
             />
           ))}
@@ -221,8 +224,8 @@ export const CrossPlatformScene: React.FC<{
         {/* Subtitle */}
         <div
           style={{
-            opacity: interpolate(frame, [40, 55], [0, 1], { extrapolateRight: "clamp" }),
-            transform: `translateY(${interpolate(frame, [40, 55], [15, 0], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) })}px)`,
+            opacity: interpolate(frame, [O + 50, O + 65], [0, 1], { extrapolateRight: "clamp" }),
+            transform: `translateY(${interpolate(frame, [O + 50, O + 65], [15, 0], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) })}px)`,
           }}
         >
           <span

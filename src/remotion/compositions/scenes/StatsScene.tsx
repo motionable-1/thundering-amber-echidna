@@ -16,6 +16,9 @@ const GREEN = "#034F46";
 const PURPLE = "#F0D7FF";
 const DARK = "#1A1A1A";
 
+// Offset to clear transition-in
+const O = 12;
+
 interface StatData {
   value: number;
   suffix: string;
@@ -59,7 +62,7 @@ const StatCard: React.FC<{
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const startFrame = stat.delay + 18;
+  const startFrame = stat.delay + O + 22;
   const cardScale = spring({
     frame: Math.max(0, frame - startFrame),
     fps,
@@ -120,8 +123,8 @@ const StatCard: React.FC<{
         <Counter
           from={0}
           to={stat.value}
-          duration={1.8}
-          delay={stat.delay / 30 + 0.8}
+          duration={1.5}
+          delay={(stat.delay + O + 25) / 30}
           decimals={stat.decimals ?? 0}
           prefix={stat.prefix}
           suffix=""
@@ -171,8 +174,8 @@ export const StatsScene: React.FC<{
   const frame = useCurrentFrame();
 
   // Label entrance
-  const labelOpacity = interpolate(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-  const labelX = interpolate(frame, [0, 15], [-20, 0], {
+  const labelOpacity = interpolate(frame, [O, O + 12], [0, 1], { extrapolateRight: "clamp" });
+  const labelX = interpolate(frame, [O, O + 15], [-20, 0], {
     extrapolateRight: "clamp",
     easing: Easing.out(Easing.cubic),
   });
@@ -185,7 +188,7 @@ export const StatsScene: React.FC<{
           position: "absolute",
           top: "10%",
           left: "12%",
-          opacity: interpolate(frame, [5, 20], [0, 0.2], { extrapolateRight: "clamp" }),
+          opacity: interpolate(frame, [O + 5, O + 20], [0, 0.2], { extrapolateRight: "clamp" }),
         }}
       >
         <ShapeAnimation shape="star" animation="rotate" size={50} color={PURPLE} speed={0.1} />
@@ -195,7 +198,7 @@ export const StatsScene: React.FC<{
           position: "absolute",
           bottom: "18%",
           right: "8%",
-          opacity: interpolate(frame, [10, 25], [0, 0.15], { extrapolateRight: "clamp" }),
+          opacity: interpolate(frame, [O + 10, O + 25], [0, 0.15], { extrapolateRight: "clamp" }),
         }}
       >
         <ShapeAnimation shape="circle" animation="pulse" size={60} color={GREEN} speed={0.5} />
@@ -244,7 +247,7 @@ export const StatsScene: React.FC<{
           stagger={0.06}
           duration={0.5}
           ease="power3.out"
-          startFrom={6}
+          startFrom={O + 6}
           style={{
             fontFamily: headingFont,
             fontSize: 52,
