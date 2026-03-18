@@ -10,6 +10,9 @@ import { IntroScene } from "./scenes/IntroScene";
 import { CrossPlatformScene } from "./scenes/CrossPlatformScene";
 import { SpeechCleanupScene } from "./scenes/SpeechCleanupScene";
 import { UniversalAppsScene } from "./scenes/UniversalAppsScene";
+import { PrivacyScene } from "./scenes/PrivacyScene";
+import { StatsScene } from "./scenes/StatsScene";
+import { VoiceOsScene } from "./scenes/VoiceOsScene";
 import { CtaScene } from "./scenes/CtaScene";
 
 // Load Wispr brand fonts
@@ -23,17 +26,20 @@ const { fontFamily: bodyFont } = loadFigtree("normal", {
 });
 
 /**
- * Wispr Flow Product Demo
+ * Wispr Flow Product Demo — Extended
  *
  * Scene breakdown (30fps):
- * 1. Intro         — 120 frames (4s)
- * 2. Cross-Platform — 110 frames (3.67s)
- * 3. Speech Cleanup — 120 frames (4s)
- * 4. Universal Apps — 110 frames (3.67s)
- * 5. CTA / Outro   — 120 frames (4s) + 30 frames buffer
+ * 1. Intro            — 120 frames (4.0s)
+ * 2. Cross-Platform   — 110 frames (3.7s)
+ * 3. Speech Cleanup   — 120 frames (4.0s)
+ * 4. Universal Apps   — 110 frames (3.7s)
+ * 5. Privacy First    — 120 frames (4.0s)  ← NEW
+ * 6. Stats / Numbers  — 120 frames (4.0s)  ← NEW
+ * 7. Voice OS Vision  — 120 frames (4.0s)  ← NEW
+ * 8. CTA / Outro      — 150 frames (5.0s)
  *
- * Transitions: 4 × 20 frames = 80 frames overlap
- * Total: 120 + 110 + 120 + 110 + 150 - 80 = 530 frames (~17.7s)
+ * Transitions: 7 × 20 = 140 frames overlap
+ * Total: 120+110+120+110+120+120+120+150 - 140 = 830 frames (~27.7s)
  */
 
 const TRANSITION_DURATION = 20;
@@ -95,7 +101,37 @@ export const Main: React.FC = () => {
             timing={linearTiming({ durationInFrames: TRANSITION_DURATION })}
           />
 
-          {/* Scene 5: CTA + buffer */}
+          {/* Scene 5: Privacy First (NEW) */}
+          <TransitionSeries.Sequence durationInFrames={120}>
+            <PrivacyScene headingFont={headingFont} bodyFont={bodyFont} />
+          </TransitionSeries.Sequence>
+
+          <TransitionSeries.Transition
+            presentation={blurDissolve()}
+            timing={linearTiming({ durationInFrames: TRANSITION_DURATION })}
+          />
+
+          {/* Scene 6: Stats / By the Numbers (NEW) */}
+          <TransitionSeries.Sequence durationInFrames={120}>
+            <StatsScene headingFont={headingFont} bodyFont={bodyFont} />
+          </TransitionSeries.Sequence>
+
+          <TransitionSeries.Transition
+            presentation={fade()}
+            timing={linearTiming({ durationInFrames: TRANSITION_DURATION })}
+          />
+
+          {/* Scene 7: Voice OS Vision (NEW) */}
+          <TransitionSeries.Sequence durationInFrames={120}>
+            <VoiceOsScene headingFont={headingFont} bodyFont={bodyFont} />
+          </TransitionSeries.Sequence>
+
+          <TransitionSeries.Transition
+            presentation={blurDissolve()}
+            timing={linearTiming({ durationInFrames: TRANSITION_DURATION })}
+          />
+
+          {/* Scene 8: CTA + buffer */}
           <TransitionSeries.Sequence durationInFrames={150}>
             <CtaScene headingFont={headingFont} bodyFont={bodyFont} />
           </TransitionSeries.Sequence>
